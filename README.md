@@ -5,7 +5,7 @@ A converter for llama2.c legacy models to ncnn models. Currently, this is only t
 ## Compiling
 
 Set the NCNN_DIR directory to your directory for your ncnn source tree or it will search for ncnn in the parent directory, build ncnn first.<br>
-The ncnn source tree must contain code for the LinearInt8 layer, at <https://github.com/Tencent/ncnn/pull/5007>.
+Added local support for linearint8
 
 ```
 git clone --depth=1 https://github.com/lrw04/llama2.c-to-ncnn
