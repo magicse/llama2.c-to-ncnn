@@ -1,11 +1,14 @@
-# llama2.c-to-ncnn
+## llama2.c-to-ncnn
 
 A converter for llama2.c legacy models to ncnn models. Currently, this is only tested on the 7B and 13B model.
 
-## Compiling
+### Changes
+
+Added local support for linearint8 layer
+
+### Compiling
 
 Set the NCNN_DIR directory to your directory for your ncnn source tree or it will search for ncnn in the parent directory, build ncnn first.<br>
-Added local support for linearint8 layer
 
 ```
 git clone --depth=1 https://github.com/lrw04/llama2.c-to-ncnn
@@ -18,7 +21,7 @@ make -j$(nproc)
 
 You will get two binaries in the current folder, `convert` and `inference`. `convert` is the converter from llama2.c legacy format to ncnn format, and `inference` is an example of how to use the resulting ncnn models.
 
-## Converting Meta's weights
+### Converting Meta's weights
 
 Use `convert.py`:
 
@@ -26,7 +29,7 @@ Use `convert.py`:
 python convert.py --outfile <output file> <model directory>
 ```
 
-## Converting weights into ncnn's format
+### Converting weights into ncnn's format
 
 ```
 ./convert <output file> <ncnn model name>
@@ -37,11 +40,11 @@ python convert.py --outfile <output file> <model directory>
 
 You will get `stories15M.ncnn.bin`, `stories15M.ncnn.param` and `stories15M.ncnn.desc`. For any model with the three files, the common name `7b.ncnn` is used to denote the model.
 
-## Get tokenizer model
+### Get tokenizer model
 
 Please retrieve it from <https://github.com/karpathy/llama2.c>. It is under the name of `tokenizer.bin`. Preferredly, obtain it from an older commit and you will have proper newlines instead of <0x0A>.
 
-## Complete text using the resulting model
+### Complete text using the resulting model
 
 ```
 ./inference <MODEL> <PROMPT> <N-TOKENS>
@@ -50,7 +53,7 @@ Please retrieve it from <https://github.com/karpathy/llama2.c>. It is under the 
 ./inference stories15M.ncnn "Tell Something" 64
 ```
 
-## Example outputs
+### Example outputs
 
 > Iwasawa theory is an isomorphism of the following four categories: (i) Category of $k$-rational points of $\mathcal{G}$ and (ii) Category of $k$-rational points of $\mathcal{G}/\mathcal{K}_H$, where $\mathcal{K}_H$ denotes the relative kernel of the Hilbert modular abelian scheme $\mathcal{H}$, (iii)
 
