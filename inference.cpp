@@ -12,11 +12,16 @@
 #include <vector>
 
 #include "net.h"
+#include <linearint8.h>
 
 const int vocab_size = 32000;
 
 const float temp = 1, topp = 0.9;
 const int topk = 300;
+
+namespace ncnn {
+	DEFINE_LAYER_CREATOR(LinearInt8)	
+}
 
 struct bpe {
     int max_token_length;
@@ -80,6 +85,7 @@ std::vector<int> bpe::encode(std::string s) {
 
 struct tinyllama {
     ncnn::Net net;
+
     std::vector<ncnn::Mat> kcache, vcache;
     int ctx_length, pos, n_l, dim, n_heads;
     std::vector<float> freqs_cos, freqs_sin;
@@ -90,6 +96,11 @@ struct tinyllama {
 
 tinyllama::tinyllama(std::string bin, std::string param, int n_layers,
                      int ctx_len, int dim_, int nh) {
+	
+    net.register_custom_layer("LinearInt8", ncnn::LinearInt8_layer_creator);
+	//net.register_custom_layer("LinearInt8", LinearInt8_layer_creator);
+	net.opt.use_vulkan_compute = true;
+	
     if (net.load_param(param.c_str())) exit(1);
     if (net.load_model(bin.c_str())) exit(1);
     pos = 0;
